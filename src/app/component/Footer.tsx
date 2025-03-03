@@ -5,7 +5,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <div className='bg-[#0f104d] flex items-center justify-between px-8 py-2 text-amber-50'>
+    <div className='bg-gradient-to-b from-[#0a0a2e] to-[#020215] flex items-center justify-between px-8 py-2 text-amber-50'>
       <div className='flex gap-1 items-center'>
         <div className='flex items-center justify-center'>
           <div className='flex flex-col '>

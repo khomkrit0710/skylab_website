@@ -1,7 +1,15 @@
+import React from 'react'
+import HeroSection from './component/HeroSection';
+import SpaceSection from './component/SpaceSection';
 
-
-export default function Home() {
+function Page() {
   return (
-    <div>Hello world</div>
+    <>
+      <HeroSection />
+    
+      <SpaceSection />
+    </>
   );
 }
+
+export default Page
