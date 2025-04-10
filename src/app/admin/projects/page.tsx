@@ -32,7 +32,6 @@ export default function ProjectsPage() {
     setIsDeleting(false);
   }
 
-  // แสดงชื่อของโปรเจกต์หรือหัวข้อแรกใน sections
   const getDisplayTitle = (project: Project): string => {
     if (project.title) return project.title;
     

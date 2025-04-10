@@ -7,12 +7,10 @@ export default function ContactSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    // Use IntersectionObserver instead of scroll event for better performance
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setIsVisible(true);
-          // Once visible, we can disconnect the observer
           if (sectionRef.current) {
             observer.unobserve(sectionRef.current);
           }

@@ -13,12 +13,10 @@ export default function ProjectsSection() {
   const projectsLoaded = useRef(false);
 
   useEffect(() => {
-    // Create an intersection observer to detect when the section comes into view
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setIsVisible(true);
-          // Only fetch projects once when the section becomes visible
           if (!projectsLoaded.current) {
             fetchProjects();
             projectsLoaded.current = true;
@@ -41,7 +39,6 @@ export default function ProjectsSection() {
 
   async function fetchProjects() {
     try {
-      // Add a small timeout to prevent UI blocking during navigation
       setTimeout(async () => {
         const data = await getProjects();
         setProjects(data);
@@ -53,7 +50,6 @@ export default function ProjectsSection() {
     }
   }
 
-  // แสดงภาพแรกที่พบใน sections (ถ้ามี)
   const getFirstImage = (project: Project): string | undefined => {
     if (!project.sections || project.sections.length === 0) return undefined;
     
@@ -64,7 +60,6 @@ export default function ProjectsSection() {
     return undefined;
   };
 
-  // แสดงชื่อของโปรเจกต์หรือหัวข้อแรกใน sections
   const getDisplayTitle = (project: Project): string => {
     if (project.title) return project.title;
     
@@ -76,7 +71,6 @@ export default function ProjectsSection() {
     return 'ไม่มีชื่อ';
   };
 
-  // แสดงคำอธิบายแรกที่พบใน sections
   const getFirstDescription = (project: Project): string | undefined => {
     if (!project.sections || project.sections.length === 0) return undefined;
     
@@ -86,8 +80,7 @@ export default function ProjectsSection() {
     
     return undefined;
   };
-  
-  // ตรวจสอบว่าโปรเจกต์มีเนื้อหาที่จะแสดงหรือไม่
+
   const hasContent = (project: Project): boolean => {
     if (project.title) return true;
     if (!project.sections || project.sections.length === 0) return false;
@@ -101,7 +94,6 @@ export default function ProjectsSection() {
     return false;
   };
 
-  // Optimize rendering by memoizing the project card
   const ProjectCard = React.memo(({ project }: { project: Project }) => (
     <div className="group relative">
       <div className="absolute -inset-1 bg-gradient-to-r from-[#6366f1]/20 to-[#a855f7]/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -171,7 +163,7 @@ export default function ProjectsSection() {
         </div>
         
         {!isVisible ? (
-          <div className="h-64"></div> // Placeholder before section is visible
+          <div className="h-64"></div>
         ) : loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="w-12 h-12 border-4 border-t-[#6366f1] border-r-transparent border-b-[#a855f7] border-l-transparent rounded-full animate-spin"></div>

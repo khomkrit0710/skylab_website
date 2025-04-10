@@ -13,7 +13,6 @@ export default function SkillsSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    // Check if element is in viewport for better performance
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -40,10 +39,9 @@ export default function SkillsSection() {
   }, []);
 
   const startAnimation = () => {
-    // Slow down the animation speed for better performance
     const animate = () => {
       setPositionLanguages(prev => {
-        const newPos = prev - 0.5; // Reduced speed
+        const newPos = prev - 0.5;
         if (languagesContainerRef.current && Math.abs(newPos) > languagesContainerRef.current.scrollWidth / 2) {
           return 0;
         }
@@ -51,7 +49,7 @@ export default function SkillsSection() {
       });
 
       setPositionTools(prev => {
-        const newPos = prev - 0.5; // Reduced speed
+        const newPos = prev - 0.5;
         if (toolsContainerRef.current && Math.abs(newPos) > toolsContainerRef.current.scrollWidth / 2) {
           return 0;
         }
@@ -99,7 +97,6 @@ export default function SkillsSection() {
   const loopedLanguages = [...programmingLanguages, ...programmingLanguages];
   const loopedTools = [...toolsAndSoftware, ...toolsAndSoftware];
 
-  // Memoize the SkillCard component to prevent unnecessary re-renders
   const SkillCard = React.memo(({ skill }: { skill: { name: string; image: string } }) => (
     <div className="bg-black/20 border border-white/10 rounded-xl p-6 backdrop-blur-sm relative group hover:border-white/30 transition-all duration-300 inline-block">
       <div className="relative text-center w-24">

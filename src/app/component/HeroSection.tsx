@@ -14,7 +14,6 @@ export default function HeroSection() {
     
     const handleScroll = () => {
       if (!ticking.current) {
-        // Use requestAnimationFrame to limit how often the scroll handler runs
         window.requestAnimationFrame(() => {
           setScrollY(window.scrollY);
           ticking.current = false;
@@ -23,8 +22,6 @@ export default function HeroSection() {
       }
     };
 
-    // Only start listening to scroll events after the component is mounted
-    // This avoids unnecessary calculations during navigation
     const timer = setTimeout(() => {
       scrollListenerActive.current = true;
       window.addEventListener('scroll', handleScroll, { passive: true });

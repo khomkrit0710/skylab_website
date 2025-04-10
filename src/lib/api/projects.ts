@@ -1,21 +1,18 @@
 import { supabase } from '../supabase';
 
-// ประเภทข้อมูลของ Section
 export type Section = {
-  title?: string;          // หัวข้อของ section
-  description?: string;    // คำอธิบายของ section
-  image_url?: string;      // URL รูปภาพของ section
+  title?: string;
+  description?: string;
+  image_url?: string;
 }
 
-// ประเภทข้อมูลของ Project
 export type Project = {
   id: number;
-  title?: string;          // ชื่อโครงการ
-  sections: Section[];     // array ของ sections
+  title?: string;
+  sections: Section[];
   created_at?: string;
 }
 
-// ดึงข้อมูลโครงการทั้งหมด
 export async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase
     .from('projects')
@@ -30,7 +27,6 @@ export async function getProjects(): Promise<Project[]> {
   return data || [];
 }
 
-// ดึงข้อมูลโครงการตาม ID
 export async function getProjectById(id: number): Promise<Project | null> {
   const { data, error } = await supabase
     .from('projects')
@@ -46,11 +42,9 @@ export async function getProjectById(id: number): Promise<Project | null> {
   return data;
 }
 
-// สร้างโครงการใหม่
 export async function createProject(
   project: Omit<Project, 'id' | 'created_at' | 'sections'> & { sections?: Section[] }
 ): Promise<Project | null> {
-  // ตั้งค่าเริ่มต้นสำหรับฟิลด์ที่ไม่ได้ระบุ
   const defaultProject = {
     title: '',
     sections: project.sections || [],
@@ -67,7 +61,7 @@ export async function createProject(
     .from('projects')
     .insert([{
       ...defaultProject,
-      user_id: userData.user.id  // เพิ่ม user_id เพื่อให้ตรงตาม RLS policy
+      user_id: userData.user.id 
     }])
     .select();
   
@@ -79,7 +73,6 @@ export async function createProject(
   return data?.[0] || null;
 }
 
-// อัพโหลดรูปภาพไปยัง storage
 export async function uploadImage(file: File): Promise<string> {
   try {
     const fileExt = file.name.split('.').pop();
@@ -103,7 +96,6 @@ export async function uploadImage(file: File): Promise<string> {
   }
 }
 
-// อัพเดทโครงการ
 export async function updateProject(
   id: number, 
   project: Partial<Omit<Project, 'id' | 'created_at'>>
@@ -122,7 +114,6 @@ export async function updateProject(
   return data?.[0] || null;
 }
 
-// ลบโครงการ
 export async function deleteProject(id: number): Promise<boolean> {
   const { error } = await supabase
     .from('projects')

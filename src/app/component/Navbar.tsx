@@ -38,14 +38,12 @@ function Navbar() {
     setActiveSection(sectionId);
     
     if (section) {
-      // Improve the scroll behavior
       section.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
     }
-    
-    // Close mobile menu if open
+
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
@@ -57,7 +55,6 @@ function Navbar() {
     }`}>
       <div className="container mx-auto px-[5%] sm:px-6">
         <div className="flex justify-between items-center h-16 sm:h-20">
-          {/* Logo */}
           <Link href="/" className='flex items-center gap-2'>
             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#6366f1]/20 to-[#a855f7]/20 flex items-center justify-center">
               <span className="bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent font-bold">SL</span>
@@ -65,7 +62,6 @@ function Navbar() {
             <span className="text-white font-medium ml-1">SkyLab</span>
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link, index) => (
               <a 
@@ -91,7 +87,6 @@ function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button 
             className="md:hidden text-gray-300 hover:text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

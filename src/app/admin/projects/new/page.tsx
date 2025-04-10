@@ -14,15 +14,13 @@ export default function NewProjectPage() {
   const [error, setError] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  // เพิ่ม section ใหม่
   const addSection = () => {
     setSections([...sections, { title: '', description: '', image_url: '' }]);
   };
 
-  // ลบ section
   const removeSection = (index: number) => {
     if (sections.length === 1) {
-      // อย่างน้อยต้องมี 1 section
+
       return;
     }
     const newSections = [...sections];
@@ -30,14 +28,12 @@ export default function NewProjectPage() {
     setSections(newSections);
   };
 
-  // อัพเดทข้อมูล section
   const updateSection = (index: number, field: keyof Section, value: string) => {
     const newSections = [...sections];
     newSections[index] = { ...newSections[index], [field]: value };
     setSections(newSections);
   };
 
-  // อัพโหลดรูปภาพสำหรับ section
   const handleImageUpload = async (index: number, file: File) => {
     try {
       const imageUrl = await uploadImage(file);
@@ -47,7 +43,6 @@ export default function NewProjectPage() {
     }
   };
 
-  // จัดการการเปลี่ยนแปลงของไฟล์รูปภาพ
   const handleImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
@@ -55,7 +50,6 @@ export default function NewProjectPage() {
     }
   };
 
-  // ส่งข้อมูลโครงการไปยัง API
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -63,7 +57,6 @@ export default function NewProjectPage() {
     setUploadProgress(0);
 
     try {
-      // กรองเอาเฉพาะ sections ที่มีข้อมูล (มีอย่างน้อย 1 ฟิลด์ที่ไม่ว่าง)
       const filteredSections = sections.filter(section => 
         section.title || section.description || section.image_url
       );
@@ -127,7 +120,6 @@ export default function NewProjectPage() {
               />
             </div>
 
-            {/* Sections */}
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-white">เนื้อหา</h2>

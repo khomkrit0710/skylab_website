@@ -3,12 +3,15 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { getProjectById, Project, Section } from '@/lib/api/projects';
 import Navbar from '@/app/component/Navbar';
 import Footer from '@/app/component/Footer';
 
-export default function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const projectId = parseInt(params.id);
+export default function ProjectDetailPage() {
+  const params = useParams();
+  const projectId = parseInt(params.id as string);
+  
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +32,6 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
     loadProject();
   }, [projectId]);
 
-  // ฟังก์ชันสำหรับหารูปภาพแรกจาก sections
   const getFirstImage = (project: Project): string | undefined => {
     if (!project.sections || project.sections.length === 0) return undefined;
     
@@ -40,7 +42,6 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
     return undefined;
   };
 
-  // ตรวจสอบว่าโปรเจกต์มีเนื้อหาหรือไม่
   const hasContent = (project: Project): boolean => {
     if (project.title) return true;
     if (!project.sections || project.sections.length === 0) return false;
