@@ -16,47 +16,37 @@ export default function RotatingText() {
   const [letters, setLetters] = useState<string[]>([]);
   const [letterClass, setLetterClass] = useState('letter');
   
-  // Initial loading effect
   useEffect(() => {
-    // Show loading for 1 second
     const loadingTimer = setTimeout(() => {
       setLoading(false);
       setLetters(words[0].text.split(''));
-      
-      // Animate in the first word after loading completes
       setTimeout(() => {
         setLetterClass('letter in');
       }, 20);
     }, 100);
     
     return () => clearTimeout(loadingTimer);
-  }, []);
+  }, [words]);
   
-  // Handle the animation rotation - only start after loading is complete
   useEffect(() => {
     if (loading) return;
     
     const interval = setInterval(() => {
-      // First, animate out
       setLetterClass('letter out');
-      
-      // After letters animate out, change to the next word
       setTimeout(() => {
         setCurrentIndex((current) => (current + 1) % words.length);
         setLetterClass('letter behind');
-        
-        // Animate new letters in
+
         setTimeout(() => {
           setLetterClass('letter in');
         }, 20);
-      }, 1500); // Wait for out animation to complete
+      }, 1500);
       
-    }, 4000); // Change word every 4 seconds
+    }, 4000);
     
     return () => clearInterval(interval);
-  }, [loading]);
-  
-  // Update letters when currentIndex changes
+  }, [loading, words.length]);
+
   useEffect(() => {
     if (loading) return;
     

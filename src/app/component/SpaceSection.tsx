@@ -12,10 +12,8 @@ export default function SpaceSection() {
       setScrollY(window.scrollY);
     };
 
-    // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
 
-    // Remove event listener on cleanup
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
