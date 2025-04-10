@@ -1,6 +1,6 @@
 'use client';
 
-import { Facebook, Mail } from 'lucide-react'
+import { Facebook, Mail, Lock } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -10,18 +10,18 @@ function Footer() {
       <div className="container mx-auto px-[5%] sm:px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#6366f1]/20 to-[#a855f7]/20 flex items-center justify-center">
+            <Link href="/admin/login" className="w-10 h-10 rounded-full bg-gradient-to-r from-[#6366f1]/20 to-[#a855f7]/20 flex items-center justify-center transition-all hover:from-[#6366f1]/30 hover:to-[#a855f7]/30">
               <span className="bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent font-bold">SL</span>
-            </div>
+            </Link>
             <div>
               <h3 className="text-white font-medium">Skylab Coding Official</h3>
-
             </div>
           </div>
           <div>
             <p className="text-gray-400 text-sm">© 2025 SkyLab. All rights reserved.</p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+          
+          <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#6366f1]/20 to-[#a855f7]/20 flex items-center justify-center">
                 <Link 
@@ -48,7 +48,6 @@ function Footer() {
               <span className="text-gray-400 text-sm">kr.khomkrit@gmail.com</span>
             </div>
           </div>
-          
         </div>
       </div>
     </footer>

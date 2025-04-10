@@ -8,19 +8,28 @@ export default function AboutSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const isInView = rect.top <= window.innerHeight * 0.75;
-        setIsVisible(isInView);
-      }
-    };
+    // Use IntersectionObserver instead of scroll event for better performance
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          // Once it's visible, we can disconnect the observer
+          if (sectionRef.current) {
+            observer.unobserve(sectionRef.current);
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
     };
   }, []);
 
@@ -57,8 +66,8 @@ export default function AboutSection() {
             className={`w-full md:w-2/5 relative h-[480px] transition-all duration-1000 transform ${
               isVisible ? 'translate-x-0 opacity-100' : '-translate-x-40 opacity-0'
             }`}
+            style={{ transitionDelay: '100ms' }}
           >
-            <div className="absolute -inset-2 bg-gradient-to-r from-[#6366f1]/10 to-[#a855f7]/10 rounded-xl blur-lg opacity-30"></div>
             <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-xl p-6 relative overflow-hidden h-full flex flex-col">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#6366f1] to-[#a855f7] opacity-70"></div>
 
@@ -70,8 +79,6 @@ export default function AboutSection() {
               </div>
 
               <div className="flex-1 flex items-center justify-center mb-6 relative">
-                <div className="absolute w-[240px] h-[240px] bg-gradient-to-r from-[#6366f1]/20 to-[#a855f7]/20 blur-xl transform translate-y-2 opacity-60"></div>
-
                 <div className="relative z-10 w-[240px] h-auto">
                   <Image 
                     src="/image/profile.png"
@@ -82,8 +89,6 @@ export default function AboutSection() {
                     priority
                   />
                 </div>
-
-                <div className="absolute bottom-0 w-full h-12 bg-gradient-to-t from-black/30 to-transparent blur-sm"></div>
               </div>
               
               <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-lg p-3 mt-auto">
@@ -106,7 +111,6 @@ export default function AboutSection() {
             }`}
             style={{ transitionDelay: '200ms' }}
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#6366f1]/5 to-[#a855f7]/5 rounded-xl blur-md"></div>
             <div className="bg-black/20 border border-white/10 rounded-xl p-6 backdrop-blur-sm relative h-full flex flex-col">
               <h3 className="text-2xl font-semibold text-white mb-6">Description</h3>
 
@@ -127,20 +131,20 @@ export default function AboutSection() {
                   <p className="text-gray-400 min-w-[120px]">Major:</p>
                   <p className='text-white'>Business Information System</p> 
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                  <p className="text-gray-400 min-w-[120px]">
-                  Hi, I&apos;m Khomkrit, a fullstack web developer with a passion for turning ideas into clean, scalable, and user - friendly applications.
-                  I specialize in building modern web apps using tools like Next.js, React, Node.js, and Supabase. I enjoy working across the stack from crafting intuitive frontend experiences to building solid backend systems. Always learning, always building.
-                  </p>
 
+                <h3 className="text-2xl font-semibold text-white mb-6">Experience</h3>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <p className="text-gray-400 min-w-[120px]">Frontend:</p>
+                  <p className='text-white'>Develop a WooCommerce WordPress website by designing the layout and ensuring responsive.</p> 
                 </div>
-              </div>
-              
-              <div className="mt-auto">
-                <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-lg p-4">
-                  <p className="text-gray-300 italic">
-                    &quot;A fullstack web developer with a passion for creating modern web apps from end to end - beautiful UI, powerful backend, and seamless user experience.&quot;
-                  </p>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <p className="text-gray-400 min-w-[120px]">FullStack:</p>
+                  <p className='text-white'>WMS project A warehouse management system responsible for handling the return function and further processing with the main inventory.</p> 
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <p className="text-gray-400 min-w-[120px]"></p>
+                  <p className='text-white'>WooCommerce website for selling products. Manages listings, promotions, discounts, and coupons. Designed with SEO in mind and offers a user-friendly interface for customers.</p> 
                 </div>
               </div>
             </div>

@@ -1,21 +1,41 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 export default function ContactSection() {
-  useEffect(() => {
-    const handleScroll = () => {
-    };
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
-    window.addEventListener('scroll', handleScroll);
+  useEffect(() => {
+    // Use IntersectionObserver instead of scroll event for better performance
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          // Once visible, we can disconnect the observer
+          if (sectionRef.current) {
+            observer.unobserve(sectionRef.current);
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
     };
   }, []);
 
   return (
     <section 
       id="Contact"
+      ref={sectionRef}
       className="min-h-screen w-full flex justify-center items-center relative py-20" 
       style={{ 
         background: 'radial-gradient(circle, #0a0a2e 0%, #020215 100%)',
@@ -23,10 +43,11 @@ export default function ContactSection() {
       }}
     >
       <div className="container mx-auto px-[5%] sm:px-6">
-        <div className="space-y-6 text-center mb-12">
+        <div className={`space-y-6 text-center mb-12 transition-all duration-1000 transform ${
+          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+        }`}>
           <h2 className="text-5xl font-bold">
             <span className="relative inline-block">
-              <span className="absolute -inset-2 bg-gradient-to-r from-[#6366f1] to-[#a855f7] blur-2xl opacity-20"></span>
               <span className="relative bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent">
                 Contact
               </span>
@@ -35,9 +56,10 @@ export default function ContactSection() {
         </div>
         
         <div className="flex justify-center">
-          <div className="lg:w-1/2 max-w-md">
+          <div className={`lg:w-1/2 max-w-md transition-all duration-1000 transform ${
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+          }`} style={{ transitionDelay: '200ms' }}>
             <div className="bg-black/20 border border-white/10 rounded-xl p-8 backdrop-blur-sm relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#6366f1]/5 to-[#a855f7]/5 rounded-xl blur-xl"></div>
               <div className="relative">
                 <h3 className="text-2xl font-semibold text-white mb-6">Let&apos;s Connect</h3>
                 <div className="space-y-6">

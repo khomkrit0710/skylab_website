@@ -9,11 +9,41 @@ export default function SkillsSection() {
   const languagesContainerRef = useRef<HTMLDivElement>(null);
   const toolsContainerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    // Check if element is in viewport for better performance
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          startAnimation();
+        } else {
+          setIsVisible(false);
+          stopAnimation();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+      stopAnimation();
+    };
+  }, []);
+
+  const startAnimation = () => {
+    // Slow down the animation speed for better performance
     const animate = () => {
       setPositionLanguages(prev => {
-        const newPos = prev - 1;
+        const newPos = prev - 0.5; // Reduced speed
         if (languagesContainerRef.current && Math.abs(newPos) > languagesContainerRef.current.scrollWidth / 2) {
           return 0;
         }
@@ -21,7 +51,7 @@ export default function SkillsSection() {
       });
 
       setPositionTools(prev => {
-        const newPos = prev - 1;
+        const newPos = prev - 0.5; // Reduced speed
         if (toolsContainerRef.current && Math.abs(newPos) > toolsContainerRef.current.scrollWidth / 2) {
           return 0;
         }
@@ -32,13 +62,14 @@ export default function SkillsSection() {
     };
 
     animationRef.current = requestAnimationFrame(animate);
+  };
 
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, []);
+  const stopAnimation = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+  };
 
   const programmingLanguages = [
     { name: "React", image: "/image/skills/react.png" },
@@ -68,9 +99,9 @@ export default function SkillsSection() {
   const loopedLanguages = [...programmingLanguages, ...programmingLanguages];
   const loopedTools = [...toolsAndSoftware, ...toolsAndSoftware];
 
-  const SkillCard = ({ skill }: { skill: { name: string; image: string } }) => (
+  // Memoize the SkillCard component to prevent unnecessary re-renders
+  const SkillCard = React.memo(({ skill }: { skill: { name: string; image: string } }) => (
     <div className="bg-black/20 border border-white/10 rounded-xl p-6 backdrop-blur-sm relative group hover:border-white/30 transition-all duration-300 inline-block">
-      <div className="absolute -inset-1 bg-gradient-to-r from-[#6366f1]/10 to-[#a855f7]/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       <div className="relative text-center w-24">
         <div className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center">
           <Image 
@@ -79,16 +110,20 @@ export default function SkillsSection() {
             width={60}
             height={60}
             className="object-contain"
+            loading="lazy"
           />
         </div>
         <h3 className="text-white font-medium">{skill.name}</h3>
       </div>
     </div>
-  );
+  ));
+
+  SkillCard.displayName = 'SkillCard';
 
   return (
     <section 
       id="Skills"
+      ref={sectionRef}
       className="min-h-screen w-full flex flex-col justify-center items-center relative py-20" 
       style={{ 
         background: 'radial-gradient(circle, #0a0a2e 0%, #020215 100%)',
@@ -110,45 +145,50 @@ export default function SkillsSection() {
           </p>
         </div>
         
-        {/* Programming Languages Section */}
-        <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center mb-8">
-            <span className="bg-gradient-to-r from-[#6366f1]/80 to-[#a855f7]/80 bg-clip-text text-transparent">
-              Programming Languages
-            </span>
-          </h3>
-          <div className="overflow-hidden relative">
-            <div 
-              ref={languagesContainerRef}
-              className="flex gap-6 py-6 whitespace-nowrap"
-              style={{ transform: `translateX(${positionLanguages}px)` }}
-            >
-              {loopedLanguages.map((skill, index) => (
-                <SkillCard key={index} skill={skill} />
-              ))}
+        {/* Only render content when visible to save resources */}
+        {isVisible && (
+          <>
+            {/* Programming Languages Section */}
+            <div className="mb-16">
+              <h3 className="text-3xl font-bold text-center mb-8">
+                <span className="bg-gradient-to-r from-[#6366f1]/80 to-[#a855f7]/80 bg-clip-text text-transparent">
+                  Programming Languages
+                </span>
+              </h3>
+              <div className="overflow-hidden relative">
+                <div 
+                  ref={languagesContainerRef}
+                  className="flex gap-6 py-6 whitespace-nowrap"
+                  style={{ transform: `translateX(${positionLanguages}px)` }}
+                >
+                  {loopedLanguages.map((skill, index) => (
+                    <SkillCard key={index} skill={skill} />
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        
-        {/* Tools & Software Section */}
-        <div>
-          <h3 className="text-3xl font-bold text-center mb-8">
-            <span className="bg-gradient-to-r from-[#6366f1]/80 to-[#a855f7]/80 bg-clip-text text-transparent">
-              Tools & Software
-            </span>
-          </h3>
-          <div className="overflow-hidden relative">
-            <div 
-              ref={toolsContainerRef}
-              className="flex gap-6 py-6 whitespace-nowrap"
-              style={{ transform: `translateX(${positionTools}px)` }}
-            >
-              {loopedTools.map((skill, index) => (
-                <SkillCard key={index} skill={skill} />
-              ))}
+            
+            {/* Tools & Software Section */}
+            <div>
+              <h3 className="text-3xl font-bold text-center mb-8">
+                <span className="bg-gradient-to-r from-[#6366f1]/80 to-[#a855f7]/80 bg-clip-text text-transparent">
+                  Tools & Software
+                </span>
+              </h3>
+              <div className="overflow-hidden relative">
+                <div 
+                  ref={toolsContainerRef}
+                  className="flex gap-6 py-6 whitespace-nowrap"
+                  style={{ transform: `translateX(${positionTools}px)` }}
+                >
+                  {loopedTools.map((skill, index) => (
+                    <SkillCard key={index} skill={skill} />
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </section>
   )

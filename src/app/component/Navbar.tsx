@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react'
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("Home");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +32,25 @@ function Navbar() {
     { title: "Contact", href: "#Contact" }
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault();
+    const section = document.getElementById(sectionId);
+    setActiveSection(sectionId);
+    
+    if (section) {
+      // Improve the scroll behavior
+      section.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+    
+    // Close mobile menu if open
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       isScrolled ? 'bg-black/70 backdrop-blur-lg shadow-md' : 'bg-transparent'
@@ -48,13 +68,18 @@ function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link, index) => (
-              <Link 
+              <a 
                 key={index}
                 href={link.href}
-                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+                onClick={(e) => handleNavClick(e, link.title)}
+                className={`text-sm font-medium transition-colors ${
+                  activeSection === link.title 
+                    ? 'text-white' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
               >
                 {link.title}
-              </Link>
+              </a>
             ))}
             <Link 
               href="https://www.facebook.com/profile.php?id=100006639856826"
@@ -82,14 +107,18 @@ function Navbar() {
       } overflow-hidden`}>
         <div className="container mx-auto px-[5%] py-4 space-y-3">
           {navLinks.map((link, index) => (
-            <Link 
+            <a 
               key={index}
               href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block py-2 text-gray-300 hover:text-white transition-colors"
+              onClick={(e) => handleNavClick(e, link.title)}
+              className={`block py-2 transition-colors ${
+                activeSection === link.title 
+                  ? 'text-white' 
+                  : 'text-gray-300 hover:text-white'
+              }`}
             >
               {link.title}
-            </Link>
+            </a>
           ))}
           <Link 
             href="https://www.facebook.com/profile.php?id=100006639856826"
