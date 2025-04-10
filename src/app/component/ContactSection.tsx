@@ -88,6 +88,15 @@ export default function ContactSection() {
                       <p className="text-white">Bangkok, Thailand</p>
                     </div>
                   </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#6366f1]/20 to-[#a855f7]/20 flex items-center justify-center text-white">
+                      📩
+                    </div>
+                    <div>
+                      <p className="text-gray-400">Line</p>
+                      <p className="text-white">ID: ooKhomoo</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

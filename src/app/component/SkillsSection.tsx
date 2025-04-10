@@ -145,11 +145,10 @@ export default function SkillsSection() {
         {/* Only render content when visible to save resources */}
         {isVisible && (
           <>
-            {/* Programming Languages Section */}
             <div className="mb-16">
               <h3 className="text-3xl font-bold text-center mb-8">
                 <span className="bg-gradient-to-r from-[#6366f1]/80 to-[#a855f7]/80 bg-clip-text text-transparent">
-                  Programming Languages
+                  Programming Languages & Frameworks
                 </span>
               </h3>
               <div className="overflow-hidden relative">

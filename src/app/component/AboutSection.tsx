@@ -61,7 +61,7 @@ export default function AboutSection() {
         
         <div className="w-full flex flex-col md:flex-row gap-8 items-stretch">
           <div 
-            className={`w-full md:w-2/5 relative h-[480px] transition-all duration-1000 transform ${
+            className={`w-full md:w-2/5 relative h-[500px] transition-all duration-1000 transform ${
               isVisible ? 'translate-x-0 opacity-100' : '-translate-x-40 opacity-0'
             }`}
             style={{ transitionDelay: '100ms' }}
@@ -104,7 +104,7 @@ export default function AboutSection() {
           </div>
 
           <div 
-            className={`w-full md:w-3/5 relative h-[480px] transition-all duration-1000 transform ${
+            className={`w-full md:w-3/5 relative h-[500px] transition-all duration-1000 transform ${
               isVisible ? 'translate-x-0 opacity-100' : 'translate-x-40 opacity-0'
             }`}
             style={{ transitionDelay: '200ms' }}
